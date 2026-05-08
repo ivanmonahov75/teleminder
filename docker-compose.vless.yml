@@ -1,0 +1,13 @@
+services:
+  vless-proxy:
+    image: teddysun/xray
+    container_name: teleminder-vless-proxy
+    restart: unless-stopped
+    volumes:
+      - ./xray-config.json:/etc/xray/config.json:ro
+
+  teleminder:
+    environment:
+      TELEGRAM_PROXY_URL: http://vless-proxy:10809
+    depends_on:
+      - vless-proxy

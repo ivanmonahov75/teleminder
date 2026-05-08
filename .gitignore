@@ -1,5 +1,6 @@
 .env
 allowed_users.txt
+xray-config.json
 __pycache__/
 *.py[cod]
 venv/

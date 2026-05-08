@@ -18,6 +18,7 @@ from telegram.ext import (
     MessageHandler,
     filters,
 )
+from telegram.request import HTTPXRequest
 
 
 BASE_DIR = Path(__file__).resolve().parent
@@ -104,6 +105,17 @@ def require_allowed(handler):
 
 def get_timezone() -> ZoneInfo:
     return ZoneInfo(os.getenv("MAIN_TIMEZONE", DEFAULT_TIMEZONE))
+
+
+def build_application(token: str) -> Application:
+    builder = Application.builder().token(token)
+    proxy_url = os.getenv("TELEGRAM_PROXY_URL")
+    if proxy_url:
+        logger.info("Using Telegram proxy: %s", proxy_url)
+        builder = builder.request(HTTPXRequest(proxy_url=proxy_url))
+        builder = builder.get_updates_request(HTTPXRequest(proxy_url=proxy_url))
+
+    return builder.build()
 
 
 def parse_time_input(raw_value: str) -> time | None:
@@ -807,7 +819,7 @@ def main() -> None:
     if not token:
         raise RuntimeError("Set TELEGRAM_BOT_TOKEN environment variable.")
 
-    application = Application.builder().token(token).build()
+    application = build_application(token)
     application.add_handler(CommandHandler("start", start))
     application.add_handler(CommandHandler("make", make))
     application.add_handler(CommandHandler("edit", edit))
