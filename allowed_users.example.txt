@@ -1,0 +1,6 @@
+# Add one Telegram user ID per line.
+# Usernames are not supported because they can change.
+#
+# Example:
+# 123456789
+# 987654321

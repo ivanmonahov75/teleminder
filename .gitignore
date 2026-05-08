@@ -1,0 +1,8 @@
+.env
+allowed_users.txt
+__pycache__/
+*.py[cod]
+venv/
+.venv/
+data/*.json
+!data/*.example.json

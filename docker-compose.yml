@@ -1,0 +1,10 @@
+services:
+  teleminder:
+    build: .
+    container_name: teleminder
+    restart: unless-stopped
+    env_file:
+      - .env
+    volumes:
+      - ./allowed_users.txt:/app/allowed_users.txt:ro
+      - ./data:/app/data
